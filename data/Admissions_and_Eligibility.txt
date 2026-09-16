@@ -1,0 +1,56 @@
+SOURCE DOCUMENT - FOR RAG CORPUS
+Admissions & Eligibility
+SRM Institute of Science and Technology. Compiled from official eligibility criteria and AICTE-approved intake information for the 2025-26 academic year.
+
+1. Eligibility for B.Tech Programs (Regular Stream)
+Nationality and age
+Resident Indian or Non-Resident Indian (NRI) candidates are eligible to apply for SRMIST Ramapuram. NRI candidates must apply under the International Student category only.
+Candidates should have attained the age of 16 years and 6 months on the 31st of July of the calendar year in which the 12th Board examination is held.
+
+Qualifying examination
+Applicants must have passed the Higher Secondary examination (10+2 pattern), or be appearing for it in the current academic year, with a minimum of 60% aggregate across 3 subjects: Physics (mandatory), Mathematics (mandatory), and at least one of Chemistry, Biotechnology, Biology, Computer Science, Information Technology, Informatics Practices, Engineering Graphics, Botany or Zoology, from any recognised board (CBSE, ISCE, State Boards, IB or NIOS).
+
+Notes and exceptions
+- For B.Tech programs under Biotechnology, Genetic Engineering, and Biomedical Engineering: minimum 60% aggregate in PCM / PMB / PCB / PCB-or-Z (Botany or Zoology).
+- Students who have not studied Mathematics as a major +2 subject must complete an additional 4-credit Mathematics course in the first year of B.Tech.
+- Students who completed +2 under NIOS must have completed 10th standard through regular schooling, or vice versa.
+- Students who have not studied Chemistry must undergo a bridge course in Chemistry in the first year.
+
+2. Eligibility for Other Programs
+B.Des. (4 years)
+A pass in 10+2 (Higher Secondary) or an equivalent examination recognised by SRMIST, with a minimum of 60% aggregate. Candidates may belong to any stream - Science, Commerce, Fine Arts, or any other.
+
+B.Arch. (5 years)
+Candidates must have passed 10+2 with at least 60% aggregate in Physics, Chemistry and Mathematics, and at least 60% aggregate overall at the 10+2 level - or a 10+3 Diploma with Mathematics as a compulsory subject and at least 60% aggregate.
+A pass in NATA (National Aptitude Test in Architecture, conducted by the Council of Architecture) or IIT JEE Mains Paper II is also accepted, per COA notification Ref. No. CA/28/NATA 2017 dated 15th June 2017. No separate entrance exam is conducted by SRM for B.Arch; candidates apply using the prescribed application form.
+
+M.Arch. - Master of Architecture (2 years)
+Requires a B.Arch or equivalent degree, plus a written exam and personal interview conducted by SEAD, and a qualifying score in the Council of Architecture's PGETA (Postgraduate Entrance Test in Architecture).
+
+Part-time programme
+Requires a 3-year Diploma with 50% aggregate in the relevant specialisation, or a B.Sc in Mathematics with Physics as an allied subject, or B.Sc Physics with Mathematics as an allied subject.
+
+Lateral entry programme
+Requires a 3-year Diploma in Engineering/Technology with a minimum of 60% aggregate in the relevant specialisation from a recognised university or college.
+
+3. How Admission Is Decided
+Entrance-based programs
+For most programs, admission is through a national-level entrance examination conducted by SRM Institute of Science and Technology, or through an authorised statutory board or agency - subject to also meeting the minimum-marks requirement in the qualifying examination.
+Any candidate who has qualified in IIT JEE Main or SAT is admitted directly, even without taking SRMJEEE.
+
+Non-entrance-based programs
+B.Des admission is based solely on meeting the minimum-marks requirement in the qualifying examination. M.Arch admission likewise depends on meeting the qualifying requirement described in Section 2.
+
+4. Institution Scale (AICTE Approval, AY 2025-26)
+For context - SRM Institute of Science and Technology is a multi-campus deemed university. The following AICTE-approved intake figures apply across the institution (all campuses, all approved programs):
+Engineering & Technology Undergraduate 12,000
+Engineering & Technology Postgraduate 1,290
+Engineering & Technology Integrated 275
+Design Undergraduate 90
+Design Postgraduate 12
+MBA Postgraduate 2,190
+BBA Undergraduate 960
+MCA Postgraduate 1,020
+BCA Undergraduate 1,140
+
+Campuses covered under this AICTE approval include Kattankulathur, Ramapuram, Ramapuram Part-time, Modi Nagar-NCR, and Tiruchirappalli.

@@ -6,6 +6,9 @@ import os
 from src.retrieval import Retriever
 from src.generation import Generator
 from src.logging import get_gap_logs
+from src.ingestion import ingest_directory
+from src.chunking import chunk_documents
+from src.embedding import EmbeddingStore
 
 app = FastAPI(title="College Circulars RAG")
 
@@ -16,6 +19,22 @@ generator = None
 @app.on_event("startup")
 def startup_event():
     global retriever, generator
+    
+    # Auto-ingest data on startup for stateless environments (e.g. Render Free Tier)
+    print("Starting auto-ingestion of data directory...")
+    data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+    os.makedirs(data_dir, exist_ok=True)
+    
+    docs = ingest_directory(data_dir)
+    if docs:
+        print(f"Found {len(docs)} document pages. Chunking and embedding...")
+        chunks = chunk_documents(docs)
+        store = EmbeddingStore()
+        store.add_chunks(chunks)
+        print("Auto-ingestion complete!")
+    else:
+        print("No documents found in data directory to ingest.")
+
     retriever = Retriever()
     generator = Generator()
 
