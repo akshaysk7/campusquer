@@ -1,0 +1,11 @@
+pdfplumber
+sentence-transformers
+chromadb
+fastapi
+uvicorn
+python-multipart
+google-genai
+openai
+tiktoken
+python-dotenv
+pydantic
