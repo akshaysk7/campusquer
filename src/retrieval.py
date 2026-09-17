@@ -8,12 +8,9 @@ class Retriever:
     def retrieve(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:
         """Retrieve the top_k most similar chunks for a given query."""
         
-        # Embed the query using the same model
-        query_embedding = self.store.model.encode([query]).tolist()
-        
-        # Query ChromaDB collection
+        # Query ChromaDB collection directly (it uses the default ONNX embedding function automatically)
         results = self.store.collection.query(
-            query_embeddings=query_embedding,
+            query_texts=[query],
             n_results=top_k
         )
         

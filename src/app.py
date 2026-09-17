@@ -3,13 +3,6 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import os
 
-from src.retrieval import Retriever
-from src.generation import Generator
-from src.logging import get_gap_logs
-from src.ingestion import ingest_directory
-from src.chunking import chunk_documents
-from src.embedding import EmbeddingStore
-
 app = FastAPI(title="College Circulars RAG")
 
 # Lazy load components
@@ -32,6 +25,13 @@ class QueryResponse(BaseModel):
 @app.post("/api/query", response_model=QueryResponse)
 def query_api(request: QueryRequest):
     global retriever, generator
+    
+    # Imports are moved here to avoid eager loading
+    from src.retrieval import Retriever
+    from src.generation import Generator
+    from src.ingestion import ingest_directory
+    from src.chunking import chunk_documents
+    from src.embedding import EmbeddingStore
     
     # Lazy Initialization on first request
     if retriever is None or generator is None:
@@ -58,6 +58,7 @@ def query_api(request: QueryRequest):
 
 @app.get("/api/logs")
 def logs_api():
+    from src.logging import get_gap_logs
     return {"gap_logs": get_gap_logs()}
 
 @app.get("/", response_class=HTMLResponse)
