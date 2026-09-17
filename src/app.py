@@ -18,25 +18,9 @@ generator = None
 
 @app.on_event("startup")
 def startup_event():
-    global retriever, generator
-    
-    # Auto-ingest data on startup for stateless environments (e.g. Render Free Tier)
-    print("Starting auto-ingestion of data directory...")
-    data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
-    os.makedirs(data_dir, exist_ok=True)
-    
-    docs = ingest_directory(data_dir)
-    if docs:
-        print(f"Found {len(docs)} document pages. Chunking and embedding...")
-        chunks = chunk_documents(docs)
-        store = EmbeddingStore()
-        store.add_chunks(chunks)
-        print("Auto-ingestion complete!")
-    else:
-        print("No documents found in data directory to ingest.")
-
-    retriever = Retriever()
-    generator = Generator()
+    # We no longer eagerly load the models or ingest here to save memory.
+    # Everything is deferred to the first user request (lazy-loading).
+    pass
 
 class QueryRequest(BaseModel):
     query: str
@@ -47,6 +31,25 @@ class QueryResponse(BaseModel):
 
 @app.post("/api/query", response_model=QueryResponse)
 def query_api(request: QueryRequest):
+    global retriever, generator
+    
+    # Lazy Initialization on first request
+    if retriever is None or generator is None:
+        print("Lazy-loading models and database on first request...")
+        # Ingest documents just-in-time
+        data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+        os.makedirs(data_dir, exist_ok=True)
+        docs = ingest_directory(data_dir)
+        
+        if docs:
+            chunks = chunk_documents(docs)
+            store = EmbeddingStore()
+            store.add_chunks(chunks)
+            print("Just-in-time ingestion complete!")
+            
+        retriever = Retriever()
+        generator = Generator()
+
     chunks = retriever.retrieve(request.query)
     answer, _ = generator.generate_answer(request.query, chunks)
     
