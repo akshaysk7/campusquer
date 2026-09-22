@@ -57,6 +57,18 @@ def gaps_api():
     # Sort newest first
     return sorted(logs, key=lambda x: x['timestamp'], reverse=True)
 
+@app.get("/documents")
+def documents_api():
+    data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+    if not os.path.isdir(data_dir):
+        return []
+    docs = []
+    for name in sorted(os.listdir(data_dir)):
+        path = os.path.join(data_dir, name)
+        if os.path.isfile(path) and not name.startswith("."):
+            docs.append({"filename": name, "size": os.path.getsize(path)})
+    return docs
+
 @app.post("/api/query", response_model=QueryResponse)
 def query_api(request: QueryRequest):
     global retriever, generator

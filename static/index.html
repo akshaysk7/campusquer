@@ -3,189 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campusquer - University Knowledge Base</title>
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        campus: {
-                            50: '#f0f4f8',
-                            100: '#d9e2ec',
-                            700: '#334e68',
-                            800: '#243b53',
-                            900: '#102a43',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { 
-            background-color: #f8fafc; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        }
-        /* Tab active states */
-        .tab-active {
-            border-bottom: 2px solid #334e68;
-            color: #102a43;
-            font-weight: 600;
-        }
-        .tab-inactive {
-            color: #64748b;
-        }
-        .tab-inactive:hover {
-            color: #334e68;
-        }
-    </style>
+    <meta name="theme-color" content="#07090d">
+    <meta name="description" content="Campusquer answers questions about SRM circulars with cited sources.">
+    <title>Campusquer · Your SRM Query Base</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2307090d'/%3E%3Cg fill='none' stroke='%233d8bff' stroke-width='2.4'%3E%3Ccircle cx='13.5' cy='13.5' r='8.5'/%3E%3Cpath d='M19.8 19.8L24 24'/%3E%3C/g%3E%3Crect x='23' y='23' width='5' height='5' fill='%233d8bff'/%3E%3Cpath d='M10.5 11L16.5 12.5L12.5 17Z' fill='none' stroke='%23e6ebf2' stroke-width='1.3'/%3E%3Cg fill='%23e6ebf2'%3E%3Ccircle cx='10.5' cy='11' r='1.8'/%3E%3Ccircle cx='16.5' cy='12.5' r='1.8'/%3E%3Ccircle cx='12.5' cy='17' r='1.8'/%3E%3C/g%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;600;700&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/campusquer.css?v=3">
 </head>
-<body class="min-h-screen flex flex-col text-slate-800">
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Header -->
-    <header class="bg-campus-900 text-white shadow-sm border-b border-campus-800">
-        <div class="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-campus-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                </svg>
-                <h1 class="text-2xl font-semibold tracking-tight">Campusquer</h1>
-            </div>
-            <!-- Tabs -->
-            <nav class="flex gap-6 text-sm">
-                <button id="tab-qa" class="hover:text-campus-100 transition-colors font-medium">Q&A Search</button>
-                <button id="tab-logs" class="text-campus-100/70 hover:text-campus-100 transition-colors">Gap Logs</button>
-            </nav>
-        </div>
-    </header>
+    <!-- Icon symbols -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-chevron" viewBox="0 0 20 20"><path d="M7.5 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-file" viewBox="0 0 20 20"><path d="M5 2.5h6.5L15 6v11.5H5z M11.5 2.5V6H15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    </svg>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-4xl w-full mx-auto px-6 py-10">
-        
-        <!-- Cold Start Notification -->
-        <div id="startup-alert" class="hidden bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-md mb-8 flex items-center gap-3">
-            <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span class="text-sm font-medium">Waking up the server — this can take up to a minute on first load...</span>
-        </div>
-
-        <!-- View: Q&A -->
-        <div id="view-qa" class="block">
-            <div class="mb-10 text-center">
-                <h2 class="text-3xl font-bold text-campus-900 mb-3 tracking-tight">Official Circulars Directory</h2>
-                <p class="text-slate-500 text-lg">Ask any question about university policies, exam schedules, or official notices. Answers are strictly sourced from verified circulars.</p>
-            </div>
-
-            <!-- Search Box -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-2 flex items-center focus-within:ring-2 focus-within:ring-campus-700 transition-all mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-400 ml-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input type="text" id="query-input" class="w-full py-3 px-2 outline-none text-lg bg-transparent text-slate-800 placeholder-slate-400" placeholder="e.g., What is the minimum attendance policy?">
-                <button id="ask-btn" class="bg-campus-700 hover:bg-campus-800 text-white font-medium py-3 px-8 rounded-lg transition-colors flex items-center gap-2">
-                    Search
+    <div class="shell">
+        <!-- Sidebar (desktop) / top bar (mobile) -->
+        <header class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a class="brand" href="#ask" aria-label="Campusquer home">
+                    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+                        <g class="lm-accent" fill="none" stroke-width="2.4"><circle cx="13.5" cy="13.5" r="8.5"/><path d="M19.8 19.8L24 24"/></g>
+                        <rect class="lm-accent-fill" x="23" y="23" width="5" height="5"/>
+                        <path class="lm-edge" d="M10.5 11L16.5 12.5L12.5 17Z" fill="none" stroke-width="1.3" stroke-linejoin="round"/>
+                        <g class="lm-node"><circle cx="10.5" cy="11" r="1.8"/><circle cx="16.5" cy="12.5" r="1.8"/><circle cx="12.5" cy="17" r="1.8"/></g>
+                    </svg>
+                    <span class="brand-text">
+                        <span class="wordmark">Campusquer</span>
+                        <span class="tagline">Your SRM Query Base</span>
+                    </span>
+                </a>
+                <button class="menu-btn" id="menu-btn" type="button" aria-controls="nav-panel" aria-expanded="false" aria-label="Open menu">
+                    <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
                 </button>
             </div>
 
-            <!-- Example Questions -->
-            <div id="examples-container" class="flex flex-wrap gap-2 mb-10 justify-center">
-                <span class="text-sm text-slate-500 mr-2 self-center">Examples:</span>
-                <button class="example-btn bg-white border border-slate-200 text-slate-600 text-sm px-4 py-2 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-colors">What is the minimum attendance policy?</button>
-                <button class="example-btn bg-white border border-slate-200 text-slate-600 text-sm px-4 py-2 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-colors">How do I apply for a makeup exam?</button>
-                <button class="example-btn bg-white border border-slate-200 text-slate-600 text-sm px-4 py-2 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-colors">Are library dues required before graduation?</button>
+            <div class="nav-panel" id="nav-panel">
+                <nav class="nav" aria-label="Sections">
+                    <a class="nav-link" href="#ask" data-view="ask">
+                        <svg class="nav-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 12.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                        <span>Ask</span>
+                        <kbd class="nav-meta">/</kbd>
+                    </a>
+                    <a class="nav-link" href="#gaps" data-view="gaps">
+                        <svg class="nav-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h5M12 10h5M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                        <span>Gap Log</span>
+                        <span class="nav-meta count" id="gap-count" aria-label="logged questions"></span>
+                    </a>
+                    <a class="nav-link" href="#sources" data-view="sources">
+                        <svg class="nav-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3h7l3 3v11H5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 10h4M8 13h4" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span>Sources</span>
+                        <span class="nav-meta count" id="doc-count" aria-label="documents"></span>
+                    </a>
+                    <a class="nav-link" href="#how" data-view="how">
+                        <svg class="nav-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="7.5" width="4" height="5" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="13.5" y="7.5" width="4" height="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10h7" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span>How It Works</span>
+                    </a>
+                </nav>
+
+                <div class="server-status" id="server-status" data-state="checking" role="status">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <span class="status-label">Server</span>
+                    <span class="status-text" id="status-text">Checking</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main" id="main" tabindex="-1">
+            <!-- Cold start banner -->
+            <div class="banner" id="startup-alert" hidden>
+                <span class="banner-pulse" aria-hidden="true"></span>
+                <p><strong>Waking up the server.</strong> This can take up to a minute on first load. You can type your question meanwhile.</p>
             </div>
 
-            <!-- Results Section -->
-            <div id="result-container" class="hidden space-y-6">
-                <!-- Loading State -->
-                <div id="loading-state" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-center text-slate-500 space-y-4">
-                    <svg class="animate-spin h-8 w-8 text-campus-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Searching official documents...</span>
+            <!-- ============ ASK ============ -->
+            <section class="view" id="view-ask" data-view="ask" aria-labelledby="ask-title">
+                <div class="view-head">
+                    <p class="eyebrow">01 · Ask</p>
+                    <h1 id="ask-title" tabindex="-1">Ask the circulars</h1>
+                    <p class="lede">Answers come only from official SRM circulars, with the exact sources cited. If the circulars don't say, Campusquer won't guess.</p>
                 </div>
 
-                <!-- Answered State -->
-                <div id="answered-state" class="hidden">
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
-                        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-campus-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="font-semibold text-campus-900">Official Response</span>
-                        </div>
-                        <div class="p-6">
-                            <p id="answer-text" class="text-lg leading-relaxed text-slate-800 whitespace-pre-wrap"></p>
-                        </div>
+                <form class="ask-form" id="ask-form" autocomplete="off" role="search">
+                    <label class="sr-only" for="query-input">Your question</label>
+                    <div class="ask-field">
+                        <svg class="ask-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 12.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                        <input type="text" id="query-input" name="query" maxlength="500" placeholder="e.g. When do the Spring semester exams start?" enterkeyhint="send">
+                        <kbd class="ask-kbd" aria-hidden="true">/</kbd>
                     </div>
-                    
-                    <!-- Sources -->
+                    <button class="btn btn-primary" id="ask-btn" type="submit">
+                        <span>Ask</span>
+                        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg>
+                    </button>
+                </form>
+
+                <div class="chips" aria-label="Example questions">
+                    <span class="chips-label">Try</span>
+                    <button class="chip" type="button">When do the Spring semester final exams start?</button>
+                    <button class="chip" type="button">What is the minimum 12th percentage for B.Tech admission?</button>
+                    <button class="chip" type="button">What is the minimum age to apply for B.Tech?</button>
+                </div>
+
+                <!-- Live pipeline status -->
+                <div class="pipeline-wrap" id="pipeline-wrap" hidden>
+                    <ol class="pipeline" id="pipeline">
+                        <li class="stage" data-state="idle"><span class="stage-num">01</span><span class="stage-label">Searching circulars</span></li>
+                        <li class="stage" data-state="idle"><span class="stage-num">02</span><span class="stage-label">Reading sources</span></li>
+                        <li class="stage" data-state="idle"><span class="stage-num">03</span><span class="stage-label">Writing answer</span></li>
+                    </ol>
+                    <p class="pipeline-note" id="pipeline-note" hidden>Still working. If the server was asleep, the first answer can take up to a minute.</p>
+                </div>
+
+                <p class="sr-only" id="sr-status" aria-live="polite"></p>
+
+                <!-- Answered -->
+                <article class="panel result" id="answered-state" hidden>
+                    <div class="panel-head">
+                        <span class="panel-tag"><span class="tag-dot" aria-hidden="true"></span>Answer</span>
+                        <span class="panel-meta" id="answer-meta"></span>
+                        <button class="btn-ghost" id="copy-btn" type="button">Copy</button>
+                    </div>
+                    <p class="question-echo" id="answer-question"></p>
+                    <p class="answer-text" id="answer-text"></p>
+                </article>
+
+                <section class="sources-block" id="sources-block" hidden aria-labelledby="sources-title">
+                    <h2 class="section-label" id="sources-title">Sources <span id="sources-count"></span></h2>
+                    <ul class="source-list" id="sources-list"></ul>
+                </section>
+
+                <!-- Refused -->
+                <article class="panel result refused" id="refused-state" hidden>
+                    <svg class="refused-icon" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M6 12h14a4 4 0 014 4v22a3 3 0 00-3-3H6z M42 12H28a4 4 0 00-4 4v22a3 3 0 013-3h15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M11 19h7M11 24h3M30 19h7M33 24h4" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2 2.5"/>
+                    </svg>
                     <div>
-                        <h4 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-3 ml-1">Cited Documents</h4>
-                        <div id="sources-list" class="grid grid-cols-1 gap-4">
-                            <!-- Source cards injected here -->
-                        </div>
+                        <h2 class="refused-title">Not in the circulars yet</h2>
+                        <p class="question-echo" id="refused-question"></p>
+                        <p class="refused-text">None of the official circulars cover this, so Campusquer won't guess. Your question has been <strong>logged for the administration</strong> to review.</p>
+                        <a class="btn-ghost" href="#gaps">View gap log</a>
                     </div>
-                </div>
+                </article>
 
-                <!-- Refused State -->
-                <div id="refused-state" class="hidden bg-slate-50 rounded-xl border border-slate-200 p-8 text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 text-slate-500 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                <!-- Error -->
+                <article class="panel result error" id="error-state" hidden role="alert">
+                    <div class="panel-head">
+                        <span class="panel-tag"><span class="tag-dot" aria-hidden="true"></span>Error</span>
                     </div>
-                    <h3 class="text-lg font-medium text-slate-800 mb-2">Not found in official circulars</h3>
-                    <p class="text-slate-600 mb-4 max-w-md mx-auto">The provided documents do not cover this topic. This question has been logged for the administration to review and clarify in future circulars.</p>
-                </div>
+                    <p class="error-title">Something went wrong reaching Campusquer.</p>
+                    <p class="error-text" id="error-text"></p>
+                    <button class="btn btn-outline" id="retry-btn" type="button">Retry question</button>
+                </article>
+            </section>
 
-                <!-- Error State -->
-                <div id="error-state" class="hidden bg-red-50 rounded-xl border border-red-200 p-6 flex flex-col items-center text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <h3 class="text-lg font-medium text-red-800 mb-1">Connection Error</h3>
-                    <p id="error-text" class="text-red-600 mb-4"></p>
-                    <button id="retry-btn" class="bg-white border border-red-200 text-red-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-50 transition">Try Again</button>
+            <!-- ============ GAP LOG ============ -->
+            <section class="view" id="view-gaps" data-view="gaps" aria-labelledby="gaps-title" hidden>
+                <div class="view-head view-head-row">
+                    <div>
+                        <p class="eyebrow">02 · Gap Log</p>
+                        <h1 id="gaps-title" tabindex="-1">Unanswered questions</h1>
+                        <p class="lede">Questions the circulars couldn't answer. Each one points at something the administration could clarify.</p>
+                    </div>
+                    <button class="btn btn-outline" id="gaps-refresh" type="button">Refresh</button>
                 </div>
+                <div class="panel table-panel">
+                    <div class="table-head" aria-hidden="true"><span>Logged</span><span>Question</span></div>
+                    <ol class="gap-list" id="gap-list"></ol>
+                    <p class="empty" id="gaps-status">Loading gap log…</p>
+                </div>
+            </section>
+
+            <!-- ============ SOURCES ============ -->
+            <section class="view" id="view-sources" data-view="sources" aria-labelledby="sources-view-title" hidden>
+                <div class="view-head">
+                    <p class="eyebrow">03 · Sources</p>
+                    <h1 id="sources-view-title" tabindex="-1">Knowledge base</h1>
+                    <p class="lede">The documents Campusquer is allowed to answer from. Anything outside these is refused.</p>
+                </div>
+                <ul class="doc-grid" id="doc-grid"></ul>
+                <p class="empty" id="docs-status">Loading documents…</p>
+            </section>
+
+            <!-- ============ HOW IT WORKS ============ -->
+            <section class="view" id="view-how" data-view="how" aria-labelledby="how-title" hidden>
+                <div class="view-head">
+                    <p class="eyebrow">04 · How It Works</p>
+                    <h1 id="how-title" tabindex="-1">From circular to cited answer</h1>
+                </div>
+                <ol class="flow">
+                    <li class="flow-step">
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h11l5 5v19H8z M19 4v5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 15h8M12 19h8M12 23h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                        <span class="flow-num">01</span>
+                        <h3>Document</h3>
+                        <p>Official circulars, as PDFs and text files.</p>
+                    </li>
+                    <li class="flow-step">
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="22" height="6" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="5" y="13" width="22" height="6" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="5" y="21" width="22" height="6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                        <span class="flow-num">02</span>
+                        <h3>Chunks</h3>
+                        <p>Split into ~500-token passages that overlap slightly.</p>
+                    </li>
+                    <li class="flow-step">
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26V6M6 26h20" stroke="currentColor" stroke-width="1.6"/><g fill="currentColor"><circle cx="12" cy="18" r="2"/><circle cx="17" cy="12" r="2"/><circle cx="23" cy="16" r="2"/><circle cx="20" cy="21" r="2"/></g></svg>
+                        <span class="flow-num">03</span>
+                        <h3>Embeddings</h3>
+                        <p>Each passage becomes a vector that captures its meaning.</p>
+                    </li>
+                    <li class="flow-step">
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="14" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M20 20l7 7" stroke="currentColor" stroke-width="1.6"/><circle cx="14" cy="14" r="2.5" fill="currentColor"/></svg>
+                        <span class="flow-num">04</span>
+                        <h3>Vector search</h3>
+                        <p>Your question is matched to the 3 closest passages.</p>
+                    </li>
+                    <li class="flow-step flow-step-final">
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 6h22v16H14l-6 5v-5H5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 12h12M10 16h7" stroke="currentColor" stroke-width="1.6"/></svg>
+                        <span class="flow-num">05</span>
+                        <h3>Cited answer</h3>
+                        <p>Written only from those passages, citing each source.</p>
+                    </li>
+                </ol>
+                <div class="panel how-refuse">
+                    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 12h14a4 4 0 014 4v22a3 3 0 00-3-3H6z M42 12H28a4 4 0 00-4 4v22a3 3 0 013-3h15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M11 19h7M30 19h7" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2 2.5"/></svg>
+                    <p><strong>It refuses rather than guesses.</strong> If the retrieved passages don't contain the answer, Campusquer says so and logs the question to the Gap Log for the administration.</p>
+                </div>
+                <a class="btn btn-primary how-cta" href="#ask">Ask a question</a>
+            </section>
+        </main>
+    </div>
+
+    <!-- Templates (filled with textContent only) -->
+    <template id="tpl-source">
+        <li class="source-card">
+            <button class="source-head" type="button" aria-expanded="false">
+                <span class="source-idx"></span>
+                <svg class="source-file" aria-hidden="true"><use href="#i-file"/></svg>
+                <span class="source-name"></span>
+                <span class="source-cited" hidden>Cited</span>
+                <svg class="source-chev" aria-hidden="true"><use href="#i-chevron"/></svg>
+            </button>
+            <div class="source-body" hidden>
+                <p class="source-snippet"></p>
             </div>
-        </div>
+        </li>
+    </template>
 
-        <!-- View: Gap Logs -->
-        <div id="view-logs" class="hidden">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-campus-900 mb-2">Unanswered Queries Log</h2>
-                <p class="text-slate-500">A live record of student questions that were not covered by the currently uploaded official circulars.</p>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 border-b border-slate-200">
-                        <tr>
-                            <th class="px-6 py-4 font-semibold text-slate-600 w-48">Timestamp</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600">Student Question</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logs-table-body" class="divide-y divide-slate-100">
-                        <!-- Logs injected here -->
-                    </tbody>
-                </table>
-                <div id="logs-loading" class="p-8 text-center text-slate-500">
-                    Loading logs...
-                </div>
-                <div id="logs-empty" class="hidden p-8 text-center text-slate-500">
-                    No unanswered queries logged yet.
-                </div>
-            </div>
-        </div>
+    <template id="tpl-gap">
+        <li class="gap-row">
+            <time class="gap-time"><span class="gap-date"></span><span class="gap-rel"></span></time>
+            <p class="gap-query"></p>
+        </li>
+    </template>
 
-    </main>
+    <template id="tpl-doc">
+        <li class="doc-tile">
+            <span class="doc-type"></span>
+            <span class="doc-name"></span>
+            <span class="doc-size"></span>
+        </li>
+    </template>
 
-    <script src="/app.js"></script>
+    <script src="/app.js?v=3"></script>
 </body>
 </html>
