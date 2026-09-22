@@ -27,7 +27,7 @@ class Generator:
         if not api_key:
             print("Warning: GEMINI_API_KEY environment variable not set.")
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-3.6-flash"
+        self.model = "gemini-3.7-flash"
 
     def generate_answer(self, query: str, retrieved_chunks: List[Dict[str, Any]]) -> Tuple[str, bool]:
         """
@@ -46,15 +46,13 @@ class Generator:
         user_prompt = f"{context_text}\n\nUSER QUESTION: {query}\n\nANSWER (cite sources):"
 
         try:
-            response = self.client.models.generate_content(
+            interaction = self.client.interactions.create(
                 model=self.model,
-                contents=user_prompt,
-                config=genai.types.GenerateContentConfig(
-                    system_instruction=SYSTEM_PROMPT,
-                    temperature=0.0
-                )
+                input=user_prompt,
+                system_instruction=SYSTEM_PROMPT,
+                generation_config={"temperature": 0.0}
             )
-            answer = response.text.strip()
+            answer = interaction.output_text.strip()
             
             # Check if it's a refusal
             refusal_phrase = "do not contain the answer"

@@ -37,10 +37,7 @@ def run_demo():
     retriever = Retriever()
     generator = Generator()
     
-    if not os.environ.get("OPENAI_API_KEY"):
-        print("\nWARNING: OPENAI_API_KEY is not set. Generation step will likely fail.")
-        print("Please set it with: $env:OPENAI_API_KEY='your-key'")
-        return
+
 
     # Scenario 1: Answered with citation
     query1 = "When do the final exams start?"
