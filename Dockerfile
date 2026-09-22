@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY --chown=user:user . .
 
+# Bake the vector database into the image at build time
+RUN python pre_ingest.py
+
 # Expose a default port (Fly uses PORT env var, defaults to 8080)
 EXPOSE 8080
 

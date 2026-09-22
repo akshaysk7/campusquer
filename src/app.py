@@ -11,9 +11,14 @@ generator = None
 
 @app.on_event("startup")
 def startup_event():
-    # We no longer eagerly load the models or ingest here to save memory.
-    # Everything is deferred to the first user request (lazy-loading).
-    pass
+    global retriever, generator
+    from src.retrieval import Retriever
+    from src.generation import Generator
+    
+    print("Loading pre-baked database and models...")
+    retriever = Retriever()
+    generator = Generator()
+    print("System ready!")
 
 class QueryRequest(BaseModel):
     query: str
@@ -26,35 +31,15 @@ class QueryResponse(BaseModel):
 def query_api(request: QueryRequest):
     global retriever, generator
     
-    # Imports are moved here to avoid eager loading
-    from src.retrieval import Retriever
-    from src.generation import Generator
-    from src.ingestion import ingest_directory
-    from src.chunking import chunk_documents
-    from src.embedding import EmbeddingStore
-    
-    # Lazy Initialization on first request
-    if retriever is None or generator is None:
-        print("Lazy-loading models and database on first request...")
-        # Ingest documents just-in-time
-        data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
-        os.makedirs(data_dir, exist_ok=True)
-        docs = ingest_directory(data_dir)
+    try:
+        chunks = retriever.retrieve(request.query)
+        answer, _ = generator.generate_answer(request.query, chunks)
         
-        if docs:
-            chunks = chunk_documents(docs)
-            store = EmbeddingStore()
-            store.add_chunks(chunks)
-            print("Just-in-time ingestion complete!")
-            
-        retriever = Retriever()
-        generator = Generator()
-
-    chunks = retriever.retrieve(request.query)
-    answer, _ = generator.generate_answer(request.query, chunks)
-    
-    sources = [{"source": c["metadata"].get("source"), "page": c["metadata"].get("page_number")} for c in chunks]
-    return QueryResponse(answer=answer, sources=sources)
+        sources = [{"source": c["metadata"].get("source"), "page": c["metadata"].get("page_number")} for c in chunks]
+        return QueryResponse(answer=answer, sources=sources)
+    except Exception as e:
+        print(f"Error during query: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/logs")
 def logs_api():
@@ -196,7 +181,12 @@ def index():
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({query: q})
                     });
+                    
                     const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.detail || "Server returned an error");
+                    }
                     
                     // Display answer
                     loading.classList.add('hidden');
@@ -221,7 +211,7 @@ def index():
                     fetchLogs();
                 } catch (error) {
                     loading.classList.add('hidden');
-                    answerText.innerHTML = "An error occurred connecting to the server.";
+                    answerText.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-exclamation"></i> Error: ${error.message}</span>`;
                     answerText.classList.remove('hidden');
                 }
             }
