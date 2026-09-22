@@ -2,7 +2,7 @@ from typing import List, Dict, Any
 from src.embedding import EmbeddingStore
 
 class Retriever:
-    def __init__(self, db_dir: str = "../db", collection_name: str = "circulars"):
+    def __init__(self, db_dir: str = None, collection_name: str = "circulars"):
         self.store = EmbeddingStore(db_dir=db_dir, collection_name=collection_name)
         
     def retrieve(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:

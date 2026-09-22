@@ -5,7 +5,11 @@ from chromadb.utils import embedding_functions
 from typing import List, Dict, Any
 
 class EmbeddingStore:
-    def __init__(self, db_dir: str = "../db", collection_name: str = "circulars"):
+    def __init__(self, db_dir: str = None, collection_name: str = "circulars"):
+        if db_dir is None:
+            # Safely resolve to the db folder in the root of the project
+            db_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "db")
+            
         # We ensure ChromaDB persists to disk
         os.makedirs(db_dir, exist_ok=True)
         self.client = chromadb.PersistentClient(path=db_dir)
